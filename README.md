@@ -72,7 +72,9 @@ Master device is created on first run.
 docker start mysybasedb
 ```
 
-### Stopping /removing ...
+### Stopping / removing ...
+
+```
 docker stop mysybasedb
 ...
 docker rm -v mysybasedb
