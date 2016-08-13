@@ -82,12 +82,11 @@ docker rm -v mysybasedb
 
 ## Connecting to database
 
-You cann connect to your dataase using this credentials
+You can connect to your dataase using this credentials
 * Username: sa
-* Password: <empty>
+* Password: 
 
-<empty> means no password (or empty string)
-
+(default password is empty or empty string)
 
 ## Credits
 
