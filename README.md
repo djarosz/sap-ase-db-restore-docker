@@ -17,16 +17,16 @@ First you need to build *sap-ase-developer* image from [djarosz/sap-ase-develope
 
 Put all your database dumps in *backups* folder. Files in *backups* directory should be named like
 
-* <dbname>.db.gz 
-* <dbname>.db
-* <dbname>.gz 
-* <dbname>
+* *dbname*.db.gz 
+* *dbname*.db
+* *dbname*.gz 
+* *dbname*
 
-Actually valid file pattern is `<dbname>(|\.db|\.dump|\.dmp)(|\gz)$`.
+Actually valid file pattern is `*dbname*(|\.db|\.dump|\.dmp)(|\gz)$`.
 
 Files which are not already gzip'ed will be gzipped before image creation.
 
-***<dbname>*** part of file name will also be the restored database name but with following conversions
+*dbname* part of file name will also be the restored database name but with following conversions
 
 * all '-', '+', '.' will be replaced with '_'
 
