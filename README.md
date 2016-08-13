@@ -76,8 +76,8 @@ docker start mysybasedb
 docker stop mysybasedb
 ...
 docker rm -v mysybasedb
-...
 ```
+
 ## Connecting to database
 
 You cann connect to your dataase using this credentials
