@@ -10,7 +10,7 @@ echo "gziping all backup files"
 
 cd backups
 for file in *; do 
-	if hfile --mime-type "$file" | grep -q gzip$; then
+	if file --mime-type "$file" | grep -q gzip$; then
 		echo "$file is gzipped"
 	else
 		echo "$file is not gzipped ... compressing"
