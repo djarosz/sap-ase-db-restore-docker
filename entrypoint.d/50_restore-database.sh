@@ -19,6 +19,7 @@ function restore_db_from_file {
 	DUMP_FILE_NAME=$(basename "$BACKUP_FILE")
 	DUMP_FILE_NAME=${DUMP_FILE_NAME/\.gz/}
 	DB_NAME=$(echo $DUMP_FILE_NAME | sed -e 's/\(\|\.db\|\.dump\|\.dmp\)$//' -e 's/[.+-]\+/_/g')
+	DB_DEV_NAME=${DB_NAME}dev
 
 	echo "Extracting datbase $DB_NAME from file: $BACKUP_FILE (extracted $DUMP_FILE_NAME)"
 	mkdir -p /var/lib/sap/datadir/backups
@@ -31,19 +32,20 @@ function restore_db_from_file {
 	dump_transaction_log master
 
 	isql -Usa -P --retserverror -SSYBASE << EOF | tee /tmp/restore.log
-load database wodnik from "/var/lib/sap/datadir/backups/$DUMP_FILE_NAME" with headeronly
+load database master from "/var/lib/sap/datadir/backups/$DUMP_FILE_NAME" with headeronly
 go
 EOF
 	DB_PAGE_SIZE=$(awk '/Database page size/ {print $4}' /tmp/restore.log)
 	DB_PAGE_SIZE_KB=$(expr ${DB_PAGE_SIZE/\./} / 1024)
 	DB_PAGES=$(awk '/Number of logical pages/ {print $5}' /tmp/restore.log)
 	DB_SIZE_KB=$(expr $DB_PAGES '*' $DB_PAGE_SIZE_KB)
-
+	rm /tmp/restore.log
+	
 	isql -Usa -P --retserverror -SSYBASE << EOF | tee /tmp/restore.log
-disk init name = "$DB_NAME", physname = "/var/lib/sap/datadir/$DB_NAME.dat", 
+disk init name = "$DB_DEV_NAME", physname = "/var/lib/sap/datadir/$DB_NAME.dat", 
 	skip_alloc = true, dsync = true, size = "${DB_SIZE_KB}K"
 go
-create database $DB_NAME on $DB_NAME = "${DB_SIZE_KB}K" for load
+create database $DB_NAME on $DB_DEV_NAME = "${DB_SIZE_KB}K" for load
 go
 load database $DB_NAME from "/var/lib/sap/datadir/backups/$DUMP_FILE_NAME"
 go
