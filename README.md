@@ -30,9 +30,9 @@ Files which are not already gzip'ed will be gzipped before image creation.
 
 * all '-', '+', '.' will be replaced with '_'
 
-***Only single bump file per database is supproted***
+***Only single dump file per database is supproted***
 
-### Running build
+### Building image
 
 Run `./build.sh [<imagename>]`
 
